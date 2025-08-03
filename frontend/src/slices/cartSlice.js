@@ -12,7 +12,7 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    AddToCart: (state, action) => {
+    addToCart: (state, action) => {
       const item = action.payload;
       const existItem = state.cartItems.find((x) => x._id === item._id);
       if (existItem) {
