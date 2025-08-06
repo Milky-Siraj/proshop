@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import Message from "../components/Message";
-import { addToCart } from "../slices/cartSlice";
+import { addToCart, removeFromCart } from "../slices/cartSlice";
 
 const CartScreen = () => {
   const navigate = useNavigate();
@@ -24,6 +24,13 @@ const CartScreen = () => {
     dispatch(addToCart({ ...item, qty }));
   };
 
+  const removeFromCartHandler = async (id) => {
+    dispatch(removeFromCart(id));
+  };
+
+  const checkoutHandler = () => {
+    navigate("/login?redirect=/shipping");
+  };
   return (
     <Row>
       <Col md={8}>
@@ -63,12 +70,7 @@ const CartScreen = () => {
                     <Button
                       type="button"
                       variant="light"
-                      onClick={() =>
-                        dispatch({
-                          type: "CART_REMOVE_ITEM",
-                          payload: item.product,
-                        })
-                      }
+                      onClick={() => removeFromCartHandler(item._id)}
                     >
                       <FaTrash />
                     </Button>
@@ -97,7 +99,7 @@ const CartScreen = () => {
                 type="button"
                 className="btn-block"
                 disabled={cartItems.length === 0}
-                onClick={() => navigate("/login?redirect=shipping")}
+                onClick={checkoutHandler}
               >
                 {" "}
                 Proceed to Checkout
