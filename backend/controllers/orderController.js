@@ -35,6 +35,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
     });
 
     const createdOrder = await order.save();
+
     res.status(201).json(createdOrder);
   }
 });
@@ -43,14 +44,25 @@ const addOrderItems = asyncHandler(async (req, res) => {
 // @route GET/api/orders/myorders
 // @access private
 const getMyOrders = asyncHandler(async (req, res) => {
-  res.send("get my orders not implemented yet");
+  const orders = await Order.find({ user: req.user._id });
+  res.status(200).json(orders);
 });
 
 // @desc  Get order by ID
 // @route GET/api/orders/:id
 // @access private
 const getOrderById = asyncHandler(async (req, res) => {
-  res.send("getOrderById not implemented yet");
+  const order = await Order.findById(req.params.id).populate(
+    "user",
+    "name email"
+  );
+
+  if (order) {
+    res.status(200).json(order);
+  } else {
+    res.status(404);
+    throw new Error("Order not found");
+  }
 });
 
 // @desc  Update order to paid
